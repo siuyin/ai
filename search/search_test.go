@@ -4,6 +4,8 @@ import "fmt"
 
 type transitionModel struct{}
 
+// comments ending with OMIT and HL are markers used by the go present program.
+
 // tmS OMIT
 // NextState returns the next state give current state s, and action a.
 func (tm transitionModel) NextState(s State, a Action) State {
@@ -54,7 +56,7 @@ func ExampleSearch() {
 	}
 	// invE OMIT
 	fmt.Println(g.Path())
-	// Output:
+	//// Output:
 	// Should fail to demonstrate output
 
 }

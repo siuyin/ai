@@ -1,10 +1,15 @@
 # Notes on Artificial Intelligence
--- based on CS50 Introduction to AI with Python by Harvard University
-19 Apr 2020
 
 Loh Siu Yin
 Developer, Beyond Broadcast LLP
 siuyin@beyondbroadcast.com
+19 Apr 2020
+
+These notes are based on "CS50: Introduction to AI with Python by Harvard University".
+That course was fist published on EdX on 1 April 2020.
+
+While the course language was `python`, I have re-implemented key concepts with `Go`.
+I did this to reinforce my understanding of the course content.
 
 
 ## Search
@@ -25,7 +30,9 @@ Thus A should be written: A(S).
 
 In order to determine if a solution has been found,  
 we define the goal state, G.  
-If S = G, then the state of the world is at the goal state.  
+If S = G, then the state of the world is at _a_ goal state
+(there may be many states S that satisfy goal state G).  
+
 The path from S to G can be tracked,
 if each S maintains a pointer to its parent state Sprev.
 

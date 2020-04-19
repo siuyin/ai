@@ -5,6 +5,8 @@ package search
 
 import "fmt"
 
+// comments ending with OMIT and HL are markers used by the go present program.
+
 // Search returns the goal state and nil error when successful.
 // goal.Path can then be called to provide the path from the
 // goal state to the start state.
