@@ -2,9 +2,28 @@ package search
 
 import "fmt"
 
-type transitionModel struct{}
-
 // comments ending with OMIT and HL are markers used by the go present program.
+
+func ExampleSearch() {
+	// invS OMIT
+	start := State{ID: 12}
+	goal := State{ID: 4}
+
+	tm := transitionModel{}
+	aa := availableActions{}
+
+	g, err := Search(goal, start, tm, aa) // HL01
+	if err != nil {
+		fmt.Println(err)
+	}
+	// invE OMIT
+	fmt.Println(g.Path())
+	// Output:
+	// Should fail to demonstrate output
+
+}
+
+type transitionModel struct{}
 
 // tmS OMIT
 // NextState returns the next state give current state s, and action a.
@@ -42,21 +61,19 @@ func (aa availableActions) Actions(s State) []Action {
 
 // aaE OMIT
 
-func ExampleSearch() {
-	// invS OMIT
+func ExampleSearchDFS() {
+
 	start := State{ID: 12}
 	goal := State{ID: 4}
 
 	tm := transitionModel{}
 	aa := availableActions{}
 
-	g, err := Search(goal, start, tm, aa) // HL01
+	g, err := SearchDFS(goal, start, tm, aa) // HL01
 	if err != nil {
 		fmt.Println(err)
 	}
-	// invE OMIT
 	fmt.Println(g.Path())
-	//// Output:
+	// Output:
 	// Should fail to demonstrate output
-
 }
