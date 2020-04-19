@@ -108,9 +108,12 @@ type breadthFirstSearch struct {
 func (b *breadthFirstSearch) search(startV State) (State, error) {
 	b.markDiscovered(startV)
 	b.enqueue(startV)
+	n := 0
 	for b.qLength() > 0 {
 		v := b.dequeue()
+		n++
 		if b.atGoal(v) {
+			//fmt.Printf("DEBUG bfs: %d states explored\n", n)
 			return v, nil
 		}
 		for _, action := range b.availableActions.Actions(v) {
@@ -183,9 +186,12 @@ type depthFirstSearch struct {
 func (d *depthFirstSearch) search(startV State) (State, error) {
 	d.markDiscovered(startV)
 	d.push(startV)
+	n := 0
 	for d.sLength() > 0 {
 		v := d.pop()
+		n++
 		if d.atGoal(v) {
+			//fmt.Printf("DEBUG dfs: %d states explored\n", n)
 			return v, nil
 		}
 		for _, action := range d.availableActions.Actions(v) {

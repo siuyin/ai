@@ -19,7 +19,7 @@ func ExampleSearch() {
 	// invE OMIT
 	fmt.Println(g.Path())
 	// Output:
-	// Should fail to demonstrate output
+	// [(4: <--) (5: <--) (6: <--) (7: <--) (8: <--) (9: <--) (10: <--) (11: <--) (12: )]
 
 }
 
@@ -75,5 +75,5 @@ func ExampleSearchDFS() {
 	}
 	fmt.Println(g.Path())
 	// Output:
-	// Should fail to demonstrate output
+	// [(4: <--) (5: <--) (6: <--) (7: <--) (8: <--) (9: <--) (10: <--) (11: <--) (12: )]
 }
