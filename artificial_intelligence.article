@@ -106,3 +106,29 @@ The differences with breadth first search are highlighted in the code below:
 These include:
 1. A-star,  a heuristic enhanced search.
 1. Iterative deepening depth-first search (only for directed graphs).
+
+
+## Representing Knowledge
+
+Representing knowledge is useful in building knowledge bases and expert systems.
+
+The main ways to represent knowledge are with:
+1. Propositional logic
+1. First-order logic
+
+### Propositional logic
+
+Knowledge is represented with statements like:
+
+1. It is raining. (S1)
+1. It is sunny. (S2)
+1. S1 and S2 -> It is both raining and sunny.
+1. S1 or S2 -> It is either raining or sunny.
+1. **¬**S1 -> It is not raining. Also !S1 or not S1.
+1. There are clouds. (S3)
+1. S1 **->** S3. Reads S1 implies S3. **If** it is raining, **then** there are clouds.
+1. Water droplets are falling from the sky. (S4)
+1. S1 **<->** S4. Reads it is raining **if and only if** water droplets
+  are falling from the sky.
+  Conversely water droplets are falling from the sky **if and only if** it is raining.
+
