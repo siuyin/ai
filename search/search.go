@@ -157,11 +157,15 @@ func (b *breadthFirstSearch) isDiscovered(s State) bool {
 	return disc
 }
 
+// dfsS OMIT
+
 // SearchDFS is like Search but searches depth-first instead of breadth-first.
 func SearchDFS(goal, s State, tm NextStateter, aa Actionsner) (State, error) {
 	searcher := newDepthFirstSearch(goal, s, tm, aa) // HL01
 	return searcher.search(s)
 }
+
+// dfsE OMIT
 
 func newDepthFirstSearch(goal, s State, tm NextStateter, aa Actionsner) *depthFirstSearch {
 	dfs := &depthFirstSearch{}
@@ -183,12 +187,13 @@ type depthFirstSearch struct {
 	stack []State
 }
 
+// dfmS OMIT
 func (d *depthFirstSearch) search(startV State) (State, error) {
 	d.markDiscovered(startV)
-	d.push(startV)
+	d.push(startV) // HL
 	n := 0
-	for d.sLength() > 0 {
-		v := d.pop()
+	for d.sLength() > 0 { // HL
+		v := d.pop() // HL
 		n++
 		if d.atGoal(v) {
 			//fmt.Printf("DEBUG dfs: %d states explored\n", n)
@@ -200,12 +205,14 @@ func (d *depthFirstSearch) search(startV State) (State, error) {
 				d.markDiscovered(w)
 				w.ParentState = &v
 				w.ParentAction = action
-				d.push(w)
+				d.push(w) // HL
 			}
 		}
 	}
 	return State{}, fmt.Errorf("search failed to find goal")
 }
+
+// dfmE OMIT
 
 func (d *depthFirstSearch) push(s State) {
 	d.stack = append(d.stack, s)

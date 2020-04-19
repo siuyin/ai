@@ -67,7 +67,7 @@ i.e. T(S,A) -> S'
 
 .code search/search_test.go /aaS/,/aaE/
 
-### Example run
+#### Example run
 
 Example code:
 
@@ -89,3 +89,20 @@ Should fail to demonstrate output
 FAIL
 ```
 
+### Go Implementation with Depth-First Search
+
+Depth first search essentially uses the same algorithm as breadth first search.
+However a stack is used instead of a queue.
+
+.code search/search.go /dfsS/,/dfsE/
+
+The differences with breadth first search are highlighted in the code below:
+
+.code search/search.go /dfmS/,/dfmE/
+
+
+### Other search algorithms
+
+These include:
+1. A-star,  a heuristic enhanced search.
+1. Iterative deepening depth-first search (only for directed graphs).
