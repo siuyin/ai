@@ -1,0 +1,84 @@
+# Notes on Artificial Intelligence
+-- based on CS50 Introduction to AI with Python by Harvard University
+19 Apr 2020
+
+Loh Siu Yin
+Developer, Beyond Broadcast LLP
+siuyin@beyondbroadcast.com
+
+
+## Search
+
+Given a problem with a defined starting point,  
+find a series of actions
+that will lead to a, preferably optimal, solution.
+
+Let S be the state of the world, and  
+A be the set of actions when applied to the world  
+results in a new state S'.
+
+The transition from S to S' can then be modelled as a function:  
+T(S,A) -> S'.
+
+A is a function of the current state, S.
+Thus A should be written: A(S).
+
+In order to determine if a solution has been found,  
+we define the goal state, G.  
+If S = G, then the state of the world is at the goal state.  
+The path from S to G can be tracked,
+if each S maintains a pointer to its parent state Sprev.
+
+### Go Implementation with Breadth-First Search
+
+Let us invoke the search thus:
+
+.code search/search_test.go /invS/,/invE/ HL01
+
+`transitionModel` and `availableActions` are defined in the code
+calling `Search`.
+I will expand on their implementation later.
+
+`Search` searches breadth-first:
+
+.code search/search.go  /schS/,/schE/ HL01
+
+`breadthFirstSearch.search` is listed below.
+This implementation was guided by [pseudocode](https://en.wikipedia.org/wiki/Breadth-first_search#Pseudocode)
+given in wikipedia.
+
+.code search/search.go /bfsS/,/bfsE/
+
+#### Transition Model and Available Actions
+
+The transition model T, returns the next state S', when action A acts on current state S.  
+i.e. T(S,A) -> S'
+
+.code search/search_test.go /tmS/,/tmE/
+
+`availableActions` implements A(S) and returns a list of actions:
+
+.code search/search_test.go /aaS/,/aaE/
+
+### Example run
+
+Example code:
+
+.code search/search_test.go /invS/,/invE/ HL01
+
+Each `State` is printed out thus:
+
+.code search/search.go /strS/,/strE/
+
+Test run:
+
+```
+siuyin@godev:~/go/github.com/siuyin/ai/search$ go test
+--- FAIL: ExampleSearch (0.00s)
+got:
+[(4: <--) (5: <--) (6: <--) (7: <--) (8: <--) (9: <--) (10: <--) (11: <--) (12: )]
+want:
+Should fail to demonstrate output
+FAIL
+```
+

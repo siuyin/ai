@@ -1,9 +1,10 @@
-package Search
+package search
 
 import "fmt"
 
 type transitionModel struct{}
 
+// tmS OMIT
 // NextState returns the next state give current state s, and action a.
 func (tm transitionModel) NextState(s State, a Action) State {
 	switch a.ID {
@@ -15,6 +16,9 @@ func (tm transitionModel) NextState(s State, a Action) State {
 	return State{}
 }
 
+// tmE OMIT
+
+// aaS OMIT
 type availableActions struct{}
 
 func (aa availableActions) Actions(s State) []Action {
@@ -34,19 +38,23 @@ func (aa availableActions) Actions(s State) []Action {
 	}
 }
 
+// aaE OMIT
+
 func ExampleSearch() {
+	// invS OMIT
 	start := State{ID: 12}
 	goal := State{ID: 4}
 
 	tm := transitionModel{}
 	aa := availableActions{}
 
-	g, err := Search(goal, start, tm, aa)
+	g, err := Search(goal, start, tm, aa) // HL01
 	if err != nil {
 		fmt.Println(err)
 	}
+	// invE OMIT
 	fmt.Println(g.Path())
 	// Output:
-	// ger
+	// Should fail to demonstrate output
 
 }

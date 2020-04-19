@@ -1,8 +1,7 @@
-// Package Search
-//  Given a problem with a defined starting point,
-//  find a series of actions
-//  that will lead to a, preferably optimal, solution.
-package Search
+// Package search -- given a problem with a defined starting point.
+// Find a series of actions
+// that will lead to a, preferably optimal, solution.
+package search
 
 import "fmt"
 
@@ -11,10 +10,13 @@ import "fmt"
 // goal state to the start state.
 //
 // If Search fails, error is non-nil.
+// schS OMIT
 func Search(goal, s State, tm NextStateter, aa Actionsner) (State, error) {
-	searcher := newBreadthFirstSearch(goal, s, tm, aa)
+	searcher := newBreadthFirstSearch(goal, s, tm, aa) // HL01
 	return searcher.search(s)
 }
+
+// schE OMIT
 
 type NextStateter interface {
 	NextState(s State, a Action) State
@@ -39,9 +41,13 @@ func (s State) Path() []*State {
 	}
 	return ss
 }
+
+// strS OMIT
 func (s State) String() string {
 	return fmt.Sprintf("(%v: %s)", s.ID, s.ParentAction.Name)
 }
+
+// strE OMIT
 
 type Action struct {
 	ID   int
@@ -87,6 +93,7 @@ type breadthFirstSearch struct {
 //  11                 label w as discovered
 //  12                 w.parent := v
 //  13                 Q.enqueue(w)
+// bfsS OMIT
 func (b *breadthFirstSearch) search(startV State) (State, error) {
 	b.markDiscovered(startV)
 	b.enqueue(startV)
@@ -107,6 +114,8 @@ func (b *breadthFirstSearch) search(startV State) (State, error) {
 	}
 	return State{}, fmt.Errorf("search failed to find goal")
 }
+
+// bfsE OMIT
 
 func (b *breadthFirstSearch) markDiscovered(s State) {
 	b.discovered[s] = struct{}{}
