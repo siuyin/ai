@@ -32,34 +32,42 @@ type Prop interface {
 	String() string
 }
 
-type Symbol struct {
+func Sym(n string) KSymbol {
+	return KSymbol{Name: n}
+}
+
+type KSymbol struct {
 	Name string
 }
 
-func (s Symbol) Evaluate(model symbolSet) (bool, error) {
+func (s KSymbol) Evaluate(model symbolSet) (bool, error) {
 	val, ok := model[s]
 	if !ok {
 		return false, fmt.Errorf("variable %v not in model", s)
 	}
 	return val, nil
 }
-func (s Symbol) String() string {
+func (s KSymbol) String() string {
 	return s.Name
 }
-func (s Symbol) Symbols() symbolSet {
+func (s KSymbol) Symbols() symbolSet {
 	return symbolSet{s: false}
 }
 
-type Not struct {
-	operand Prop
+func Not(op Prop) KNot {
+	return KNot{Operand: op}
 }
 
-func (n Not) Evaluate(model symbolSet) (bool, error) {
-	val, err := n.operand.Evaluate(model)
+type KNot struct {
+	Operand Prop
+}
+
+func (n KNot) Evaluate(model symbolSet) (bool, error) {
+	val, err := n.Operand.Evaluate(model)
 	return !val, err
 }
-func (n Not) String() string {
-	return fmt.Sprintf("¬%s", parenthesize(n.operand.String()))
+func (n KNot) String() string {
+	return fmt.Sprintf("¬%s", parenthesize(n.Operand.String()))
 }
 
 func parenthesize(s string) string {
@@ -90,20 +98,26 @@ func balancedParens(s string) bool {
 	return count == 0
 }
 
-func (n Not) Symbols() symbolSet {
-	return n.operand.Symbols()
+func (n KNot) Symbols() symbolSet {
+	return n.Operand.Symbols()
 }
 
-type And struct {
-	// A conjunct is a term in an AND clause. Eg. {A,B} are conjuncts in "A AND B".)akjjjjj
-	conjuncts []Prop
+func And(a ...Prop) KAnd {
+	r := KAnd{}
+	r.Conjuncts = append(r.Conjuncts, a...)
+	return r
 }
 
-func (a And) Add(conjunct Prop) {
-	a.conjuncts = append(a.conjuncts, conjunct)
+type KAnd struct {
+	// A conjunct is a term in an AND clause. Eg. {A,B} are Conjuncts in "A AND B".)akjjjjj
+	Conjuncts []Prop
 }
-func (a And) Evaluate(model symbolSet) (bool, error) {
-	for _, elem := range a.conjuncts {
+
+func (a KAnd) Add(conjunct Prop) {
+	a.Conjuncts = append(a.Conjuncts, conjunct)
+}
+func (a KAnd) Evaluate(model symbolSet) (bool, error) {
+	for _, elem := range a.Conjuncts {
 		val, err := elem.Evaluate(model)
 		if err != nil {
 			return false, err
@@ -114,8 +128,8 @@ func (a And) Evaluate(model symbolSet) (bool, error) {
 	}
 	return true, nil
 }
-func (a And) String() string {
-	symbs := symbolStrings(a.conjuncts)
+func (a KAnd) String() string {
+	symbs := symbolStrings(a.Conjuncts)
 	return strings.Join(symbs, " ^ ")
 }
 func symbolStrings(e []Prop) []string {
@@ -127,8 +141,8 @@ func symbolStrings(e []Prop) []string {
 	}
 	return symbs
 }
-func (a And) Symbols() symbolSet {
-	return symbolsSet(a.conjuncts)
+func (a KAnd) Symbols() symbolSet {
+	return symbolsSet(a.Conjuncts)
 }
 func symbolsSet(e []Prop) symbolSet {
 	symbs := symbolSet{}
@@ -140,15 +154,21 @@ func symbolsSet(e []Prop) symbolSet {
 	return symbs
 }
 
-type Or struct {
-	disjuncts []Prop
+func Or(d ...Prop) Prop {
+	r := KOr{}
+	r.Disjuncts = append(r.Disjuncts, d...)
+	return r
 }
 
-func (o Or) Add(disjunct Prop) {
-	o.disjuncts = append(o.disjuncts, disjunct)
+type KOr struct {
+	Disjuncts []Prop
 }
-func (o Or) Evaluate(model symbolSet) (bool, error) {
-	for _, elem := range o.disjuncts {
+
+func (o KOr) Add(disjunct Prop) {
+	o.Disjuncts = append(o.Disjuncts, disjunct)
+}
+func (o KOr) Evaluate(model symbolSet) (bool, error) {
+	for _, elem := range o.Disjuncts {
 		val, err := elem.Evaluate(model)
 		if err != nil {
 			return false, err
@@ -159,30 +179,34 @@ func (o Or) Evaluate(model symbolSet) (bool, error) {
 	}
 	return false, nil
 }
-func (o Or) String() string {
-	symbs := symbolStrings(o.disjuncts)
+func (o KOr) String() string {
+	symbs := symbolStrings(o.Disjuncts)
 	return strings.Join(symbs, " v ")
 }
-func (o Or) Symbols() symbolSet {
-	return symbolsSet(o.disjuncts)
+func (o KOr) Symbols() symbolSet {
+	return symbolsSet(o.Disjuncts)
 }
 
-type Implication struct {
-	a, b Prop
+func Implication(a, b Prop) Prop {
+	return KImplication{A: a, B: b}
 }
 
-func (i Implication) Evaluate(model symbolSet) (bool, error) {
-	return Or{
+type KImplication struct {
+	A, B Prop
+}
+
+func (i KImplication) Evaluate(model symbolSet) (bool, error) {
+	return KOr{
 		[]Prop{
-			Not{i.a},
-			i.b},
+			KNot{i.A},
+			i.B},
 	}.Evaluate(model)
 }
-func (i Implication) String() string {
-	return fmt.Sprintf("%s => %s", i.a, i.b)
+func (i KImplication) String() string {
+	return fmt.Sprintf("%s => %s", i.A, i.B)
 }
-func (i Implication) Symbols() symbolSet {
-	return union(i.a.Symbols(), i.b.Symbols())
+func (i KImplication) Symbols() symbolSet {
+	return union(i.A.Symbols(), i.B.Symbols())
 }
 func union(a, b symbolSet) symbolSet {
 	s := symbolSet{}
@@ -195,21 +219,25 @@ func union(a, b symbolSet) symbolSet {
 	return s
 }
 
-type Biconditional struct {
-	a, b Prop
+func Biconditional(a, b Prop) KBiconditional {
+	return KBiconditional{A: a, B: b}
 }
 
-func (b Biconditional) Evaluate(model symbolSet) (bool, error) {
-	return Or{[]Prop{
-		And{[]Prop{b.a, b.b}},
-		And{[]Prop{Not{b.a}, Not{b.b}}},
+type KBiconditional struct {
+	A, B Prop
+}
+
+func (b KBiconditional) Evaluate(model symbolSet) (bool, error) {
+	return KOr{[]Prop{
+		KAnd{[]Prop{b.A, b.B}},
+		KAnd{[]Prop{KNot{b.A}, KNot{b.B}}},
 	}}.Evaluate(model)
 }
-func (b Biconditional) String() string {
-	return fmt.Sprintf("%s <=> %s", b.a, b.b)
+func (b KBiconditional) String() string {
+	return fmt.Sprintf("%s <=> %s", b.A, b.B)
 }
-func (b Biconditional) Symbols() symbolSet {
-	return union(b.a.Symbols(), b.b.Symbols())
+func (b KBiconditional) Symbols() symbolSet {
+	return union(b.A.Symbols(), b.B.Symbols())
 }
 
 func ModelCheck(knowledge, query Prop) (bool, error) {
@@ -256,7 +284,7 @@ func pop(s symbolSet) Prop {
 		delete(s, se)
 		return se
 	}
-	return Symbol{}
+	return KSymbol{}
 }
 func genModelsWithSymbolTrueFalse(model symbolSet, p Prop) (symbolSet, symbolSet) {
 	modelTrue := copySet(model)
