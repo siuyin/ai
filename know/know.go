@@ -219,25 +219,20 @@ func ModelCheck(knowledge, query Prop) (bool, error) {
 }
 func checkAll(knowledge, query Prop, symbols, model symbolSet) (bool, error) {
 	if len(symbols) == 0 {
-		// TODO: make the intent below clearer.
 		kbTrue, err := knowledge.Evaluate(model)
 		if err != nil {
 			return kbTrue, err
 		}
 		if kbTrue {
-			fmt.Println("OK")
 			return query.Evaluate(model)
 		}
 		return true, nil
 	}
+
 	remainingSymbols := copySet(symbols)
 	p := pop(remainingSymbols)
 
-	modelTrue := copySet(model)
-	modelTrue[p] = true
-
-	modelFalse := copySet(model)
-	modelFalse[p] = false
+	modelTrue, modelFalse := genModelsWithSymbolTrueFalse(model, p)
 
 	vT, err := checkAll(knowledge, query, remainingSymbols, modelTrue)
 	if err != nil {
@@ -262,4 +257,12 @@ func pop(s symbolSet) Prop {
 		return se
 	}
 	return Symbol{}
+}
+func genModelsWithSymbolTrueFalse(model symbolSet, p Prop) (symbolSet, symbolSet) {
+	modelTrue := copySet(model)
+	modelTrue[p] = true
+
+	modelFalse := copySet(model)
+	modelFalse[p] = false
+	return modelTrue, modelFalse
 }
