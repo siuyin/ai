@@ -6,10 +6,11 @@ siuyin@beyondbroadcast.com
 19 Apr 2020
 
 These notes are based on "CS50: Introduction to AI with Python by Harvard University".
-That course was fist published on EdX on 1 April 2020.
+That course was first published on EdX on 1 April 2020 and delivered by Brian Yu.
+brian@cs.harvard.edu
 
-While the course language was `python`, I have re-implemented key concepts with `Go`.
-I did this to reinforce my understanding of the course content.
+While the course language was `python`, I re-implemented key concepts with `Go`
+to reinforce my understanding of the course content.
 
 
 ## Search
@@ -110,25 +111,110 @@ These include:
 
 ## Representing Knowledge
 
-Representing knowledge is useful in building knowledge bases and expert systems.
+Given the knowledge an AI has, what new inferences or deductions (entailments)
+can our AI make?
 
-The main ways to represent knowledge are with:
+Given the knowledge:  
+A: temperature is 100 deg Celcius  
+B: water is boiling  
+C: atmospheric pressure is 1 Bar
+
+We have 3 separate statements of fact.
+
+Can a computer program be made to output `A` when `B` and `C` are observed to be true?
+
+In code: `if B and C then A` or ` if A and B then C` or `if A and C then B`.
+
+We started with 3 statements or `propositions` and through `inference` we can
+add 3 more statements.
+
+To do this we have to represent knowledge in a form our AI can understand.
+
+Two ways to represent knowledge are with:
 1. Propositional logic
 1. First-order logic
 
 ### Propositional logic
+Propositional logic has a language comprising
+sentences, symbols, logical connectives, models and knowledge bases.
 
-Knowledge is represented with statements like:
+#### Sentences, Symbols and Logical connectives
+
+A `sentence` is an assertion about the world in
+a knowledge representation language.
+
+The `sentence` is represented by a `symbol` like `P`.
+
+`Logical connectives` are symbols like `^ v ¬ ->` and `<->`.  
+The above mean: `and or not implies` and `biconditional` respectively.
+
+##### Examples of sentences
 
 1. It is raining. (S1)
 1. It is sunny. (S2)
-1. S1 and S2 -> It is both raining and sunny.
-1. S1 or S2 -> It is either raining or sunny.
-1. **¬**S1 -> It is not raining. Also !S1 or not S1.
+1. S1 and S2 : It is both raining and sunny.
+1. S1 or S2 : It is either raining or sunny.
+1. **¬**S1 : It is not raining. Also !S1 or not S1.
 1. There are clouds. (S3)
 1. S1 **->** S3. Reads S1 implies S3. **If** it is raining, **then** there are clouds.
 1. Water droplets are falling from the sky. (S4)
-1. S1 **<->** S4. Reads it is raining **if and only if** water droplets
+1. S1 **<->** S4. Reads it is raining **if and only if** water droplets 
   are falling from the sky.
   Conversely water droplets are falling from the sky **if and only if** it is raining.
+
+S1 through S4 are `symbols` representing the 'original', 'primitive' or 'atomic' `sentences`.
+
+`Logical connectives` augment `symbols` to form new 'compound' `sentences`.
+
+#### Models and Knowledge Bases
+A `model` is the assignment of a truth value
+to every propositional symbol.
+Thus a `model` represents a possible world.
+
+If there `n` propositional symbols, then there are `2^n` possible models.
+
+A `knowledge base` is a set of sentences known by the
+knowledge-based agent.  
+They are things about the world the AI knows.
+
+#### Entailment ⊨ 
+
+`α ⊨ β` : alpha `entails` beta if,  
+in every model in which `sentence` alpha is true,  
+`sentence` beta is also true.  
+
+Thus if in every `model`, I find `alpha` to be true and
+`beta` is also true,  
+then I can conclude that `alpha entails beta`.
+
+Let `A` and `B` be `symbols`, then  
+If `A entails B`  
+I can add to the knowledge base the new sentence: `A -> B ( A infers B )`.
+
+#### Inference
+Given a knowledge base, what entailments can an AI `infer`?
+
+`Inference` is the process of deriving new knowledge from old knowledge.
+
+If `alpha` is sentence posed to the AI,  
+We want to know if `knowledge base entails alpha`.
+
+An algorithm that takes the knowledge base as _input_ and _outputs_
+if knowledge base entails alpha is **model checking**
+
+#### Model Checking
+
+To determine if `knowledge base entails alpha`:
+1. Enumerate all possible models
+1. If in every model,  
+   knowledge base is true and  
+   alpha is true, then  
+   knowledge base entails alpha.
+   
+
+### First-order logic
+
+∀ Student, Student has ID. Reads for all students, each student has an ID.
+
+Ǝ Student, Student has 4.0 GPA. Reads there exists some students, where the student has a 4.0 grade point average.
 
