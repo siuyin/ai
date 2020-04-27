@@ -194,3 +194,72 @@ func union(a, b symbolSet) symbolSet {
 	}
 	return s
 }
+
+type Biconditional struct {
+	a, b Prop
+}
+
+func (b Biconditional) Evaluate(model symbolSet) (bool, error) {
+	return Or{[]Prop{
+		And{[]Prop{b.a, b.b}},
+		And{[]Prop{Not{b.a}, Not{b.b}}},
+	}}.Evaluate(model)
+}
+func (b Biconditional) String() string {
+	return fmt.Sprintf("%s <=> %s", b.a, b.b)
+}
+func (b Biconditional) Symbols() symbolSet {
+	return union(b.a.Symbols(), b.b.Symbols())
+}
+
+func ModelCheck(knowledge, query Prop) (bool, error) {
+	symbols := union(knowledge.Symbols(), query.Symbols())
+	model := symbolSet{}
+	return checkAll(knowledge, query, symbols, model)
+}
+func checkAll(knowledge, query Prop, symbols, model symbolSet) (bool, error) {
+	if len(symbols) == 0 {
+		// TODO: make the intent below clearer.
+		kbTrue, err := knowledge.Evaluate(model)
+		if err != nil {
+			return kbTrue, err
+		}
+		if kbTrue {
+			fmt.Println("OK")
+			return query.Evaluate(model)
+		}
+		return true, nil
+	}
+	remainingSymbols := copySet(symbols)
+	p := pop(remainingSymbols)
+
+	modelTrue := copySet(model)
+	modelTrue[p] = true
+
+	modelFalse := copySet(model)
+	modelFalse[p] = false
+
+	vT, err := checkAll(knowledge, query, remainingSymbols, modelTrue)
+	if err != nil {
+		return vT, err
+	}
+	vF, err := checkAll(knowledge, query, remainingSymbols, modelFalse)
+	if err != nil {
+		return vF, err
+	}
+	return vT && vF, nil
+}
+func copySet(s symbolSet) symbolSet {
+	r := symbolSet{}
+	for se := range s {
+		r[se] = s[se]
+	}
+	return r
+}
+func pop(s symbolSet) Prop {
+	for se := range s {
+		delete(s, se)
+		return se
+	}
+	return Symbol{}
+}

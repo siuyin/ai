@@ -87,3 +87,84 @@ func TestOr(t *testing.T) {
 		}
 	}
 }
+
+func TestImplication(t *testing.T) {
+	dat := []struct {
+		r     Prop
+		model symbolSet
+	}{
+		{r: Implication{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: true, Symbol{"Q"}: true, Symbol{"out"}: true}},
+		{r: Implication{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: true, Symbol{"Q"}: false, Symbol{"out"}: false}},
+		{r: Implication{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: false, Symbol{"Q"}: true, Symbol{"out"}: true}},
+		{r: Implication{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: false, Symbol{"Q"}: false, Symbol{"out"}: true}},
+	}
+	for i, d := range dat {
+		if d.r.String() != "P => Q" {
+			t.Errorf("case %d: unexpected value: %v", i, d.r.String())
+		}
+		val, err := d.r.Evaluate(d.model)
+		if err != nil {
+			t.Error(err)
+		}
+		if val != d.model[Symbol{"out"}] {
+			t.Errorf("case %d: unexpected value: %v", i, val)
+		}
+	}
+}
+func TestBiconditional(t *testing.T) {
+	dat := []struct {
+		r     Prop
+		model symbolSet
+	}{
+		{r: Biconditional{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: true, Symbol{"Q"}: true, Symbol{"out"}: true}},
+		{r: Biconditional{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: true, Symbol{"Q"}: false, Symbol{"out"}: false}},
+		{r: Biconditional{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: false, Symbol{"Q"}: true, Symbol{"out"}: false}},
+		{r: Biconditional{Symbol{"P"}, Symbol{"Q"}},
+			model: symbolSet{Symbol{"P"}: false, Symbol{"Q"}: false, Symbol{"out"}: true}},
+	}
+	for i, d := range dat {
+		if d.r.String() != "P <=> Q" {
+			t.Errorf("case %d: unexpected value: %v", i, d.r.String())
+		}
+		val, err := d.r.Evaluate(d.model)
+		if err != nil {
+			t.Error(err)
+		}
+		if val != d.model[Symbol{"out"}] {
+			t.Errorf("case %d: unexpected value: %v", i, val)
+		}
+	}
+}
+
+func TestPop(t *testing.T) {
+	p := Symbol{"P"}
+	ss := symbolSet{p: false}
+	q := pop(ss)
+	if q != p {
+		t.Errorf("unexpected value: %v", q)
+	}
+	if len(ss) != 0 {
+		t.Errorf("unexpected value: %v", len(ss))
+	}
+}
+
+func TestModelCheck(t *testing.T) {
+	p := Symbol{"P"}
+	q := Symbol{"Q"}
+
+	kb := And{[]Prop{p, q}}
+	val, err := ModelCheck(kb, q)
+	if err != nil {
+		t.Error(err)
+	}
+	if val != true {
+		t.Errorf("unexpected value: %v", val)
+	}
+}
