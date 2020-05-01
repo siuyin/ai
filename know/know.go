@@ -9,6 +9,7 @@ import (
 	"unicode"
 )
 
+// senS OMIT
 type sentence struct{}
 
 func (s sentence) Evaluate(model symbolSet) (bool, error) {
@@ -21,7 +22,11 @@ func (s sentence) Symbols() symbolSet {
 	return symbolSet{}
 }
 
+// senE OMIT
+
 type symbolSet map[Prop]bool
+
+// proS OMIT
 
 // Prop is short for proposition. Propositions allow evaluation against a model (set of Symbols),
 // extracting its constituent set of Symbols and provides
@@ -31,6 +36,8 @@ type Prop interface {
 	Symbols() symbolSet
 	String() string
 }
+
+// proE OMIT
 
 func Sym(n string) symbol {
 	return symbol{Name: n}

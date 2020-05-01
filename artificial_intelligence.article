@@ -121,7 +121,7 @@ C: atmospheric pressure is 1 Bar
 
 We have 3 separate statements of fact.
 
-Can a computer program be made to output `A` when `B` and `C` are observed to be true?
+Can a computer program infer `A` when `B` and `C` are observed to be true?
 
 In code: `if B and C then A` or ` if A and B then C` or `if A and C then B`.
 
@@ -165,6 +165,16 @@ The above mean: `and or not implies` and `biconditional` respectively.
 S1 through S4 are `symbols` representing the 'original', 'primitive' or 'atomic' `sentences`.
 
 `Logical connectives` augment `symbols` to form new 'compound' `sentences`.
+
+##### Go implementation of sentences and symbols
+
+A `sentence` in `go` is a `type` with 3 methods.
+
+.code know/know.go /senS/,/senE/
+
+`sentence` implements the `Prop` interface.
+
+.code know/know.go /proS/,/proE/
 
 #### Models and Knowledge Bases
 A `model` is the assignment of a truth value
