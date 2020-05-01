@@ -172,9 +172,40 @@ A `sentence` in `go` is a `type` with 3 methods.
 
 .code know/know.go /senS/,/senE/
 
-`sentence` implements the `Prop` interface.
+In CS50, the sentence class was used as the base class for
+derived classes like `symbol`, `and`, `or`, `inference` and
+`biconditional`.
+
+Go does not support class inheritance but does support interface.
+Hence `symbol` etc are implemented as `types` which implicitly
+implement the `Prop` interface.
 
 .code know/know.go /proS/,/proE/
+
+The `Evaluate` method evaluates against a model and returns `true`
+or `false`.
+
+In Go, `model` is a set of symbols. It is implemented as
+a map of `Prop` to `bool`.
+
+.code know/know.go /type symbolSet/,/$/
+
+The test code below shows how a `Prop` evaluates against a model.
+
+.code know/know_test.go /func TestModel/,/^}$/
+
+Note the lower-cased `symbol` is private / unexported and not accessible from outside
+the package.  
+External code access `symbol` via the `Sym` function.
+
+.code know/know.go /func Sym/,/^}$/
+
+Connectives like `And` and `Or` are similarly exported.
+`And()` takes zero or more `Prop`s. And() works as a
+constructor to return an `and` Prop.
+
+.code know/know.go /func And/,/^}$/
+.code know/know.go /type and/,/^}$/
 
 #### Models and Knowledge Bases
 A `model` is the assignment of a truth value
@@ -186,6 +217,19 @@ If there `n` propositional symbols, then there are `2^n` possible models.
 A `knowledge base` is a set of sentences known by the
 knowledge-based agent.  
 They are things about the world the AI knows.
+
+##### Go example on use of model checking and entailment
+
+In the test code below, our knowledge base kb is `p and q`
+or `p ^ q`.
+We want to check if the knowledge `p ^ q` entails `q`.
+In other words if we know `p ^ q` to be true, can the code
+infer `q` is also true?
+
+We know from mathematics that this is true, however the
+`model check` code can do this  algorithmically.
+
+.code know/know_test.go /func TestModelCheck/,/^}$/
 
 #### Entailment ⊨ 
 

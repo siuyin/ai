@@ -8,6 +8,7 @@ func TestSymbol(t *testing.T) {
 		t.Errorf("unexpected value: %v", p.String())
 	}
 }
+
 func TestModel(t *testing.T) {
 	p := symbol{"P"}
 	m := symbolSet{p: true}
@@ -15,6 +16,7 @@ func TestModel(t *testing.T) {
 		t.Error("symbol p should be true")
 	}
 }
+
 func TestNot(t *testing.T) {
 	dat := []struct {
 		r     Prop
@@ -156,10 +158,10 @@ func TestPop(t *testing.T) {
 }
 
 func TestModelCheck(t *testing.T) {
-	p := symbol{"P"}
-	q := symbol{"Q"}
+	p := Sym("P")
+	q := Sym("Q")
 
-	kb := and{[]Prop{p, q}}
+	kb := And(p, q)
 	val, err := ModelCheck(kb, q)
 	if err != nil {
 		t.Error(err)

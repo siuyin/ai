@@ -32,7 +32,7 @@ type symbolSet map[Prop]bool
 // extracting its constituent set of Symbols and provides
 // a human readable string representation.
 type Prop interface {
-	Evaluate(model symbolSet) (bool, error)
+	Evaluate(model symbolSet) (bool, error) // HL
 	Symbols() symbolSet
 	String() string
 }
