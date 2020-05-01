@@ -271,7 +271,7 @@ To determine if `knowledge base entails alpha`:
    
 ##### Go application using model checking
 
-The knowledge represent package is imported as `k` for brevity:
+The knowledge representation package is imported as `k` for brevity:
 
 .code know/cmd/knights-knave/main.go /k "github.com/,/$/
 .code know/cmd/knights-knave/main.go /func main/,/^}/
