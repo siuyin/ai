@@ -12,7 +12,11 @@ func TestSymbol(t *testing.T) {
 func TestModel(t *testing.T) {
 	p := symbol{"P"}
 	m := symbolSet{p: true}
-	if m[p] != true {
+	val, err := p.Evaluate(m)
+	if err != nil {
+		t.Error(err)
+	}
+	if val != true {
 		t.Error("symbol p should be true")
 	}
 }

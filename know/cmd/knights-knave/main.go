@@ -22,7 +22,7 @@ func main() {
 		k.Implication(kni, k.And(kni, kna)),
 		k.Implication(kna, k.Not(k.And(kni, kna))),
 	)
-	for _, qry := range []k.Prop{kni, kna} {
+	for _, qry := range []k.Prop{kni, kna} { // HL
 		val, err := k.ModelCheck(kb, qry)
 		if err != nil {
 			log.Fatal(err)

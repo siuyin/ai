@@ -190,7 +190,11 @@ a map of `Prop` to `bool`.
 
 .code know/know.go /type symbolSet/,/$/
 
-The test code below shows how a `Prop` evaluates against a model.
+The test code below shows how symbol, p, evaluates against  model, m.
+A symbol is a Proposition. That symbol could be true or false.
+A model is a set of symbols with truth values assigned to each symbol.
+
+In the code example below `true` is assigned to symbol `P`.
 
 .code know/know_test.go /func TestModel/,/^}$/
 
@@ -220,8 +224,8 @@ They are things about the world the AI knows.
 
 ##### Go example on use of model checking and entailment
 
-In the test code below, our knowledge base kb is `p and q`
-or `p ^ q`.
+In the test code below, our knowledge base kb is "`p and q`"
+or "`p ^ q`".
 We want to check if the knowledge `p ^ q` entails `q`.
 In other words if we know `p ^ q` to be true, can the code
 infer `q` is also true?
@@ -265,6 +269,15 @@ To determine if `knowledge base entails alpha`:
    alpha is true, then  
    knowledge base entails alpha.
    
+##### Go application using model checking
+
+The knowledge represent package is imported as `k` for brevity:
+
+.code know/cmd/knights-knave/main.go /k "github.com/,/$/
+.code know/cmd/knights-knave/main.go /func main/,/^}/
+
+The qry:=range []Prop{kni,kna} loop, model checks kb to
+determine if kb entails any of the symbols kni or kna.
 
 ### First-order logic
 
