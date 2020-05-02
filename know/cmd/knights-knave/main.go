@@ -14,14 +14,14 @@ func main() {
 	kni := k.Sym("I am a knight!")
 	kna := k.Sym("I am a knave.")
 
-	kb := knowledgeAbout(kni, kna)
+	kb := knowledgeAbout(kni, kna) // HL
 
-	ets := findEntailments(kb)
-	if len(ets) == 0 {
+	ents := findEntailments(kb) // HL
+	if len(ents) == 0 {
 		fmt.Println("Knowledge base could not make any inferences")
 	}
-	for _, et := range ets {
-		fmt.Println(et)
+	for _, ent := range ents {
+		fmt.Println(ent)
 	}
 }
 func knowledgeAbout(kni, kna k.Prop) k.Prop {
