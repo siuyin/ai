@@ -272,12 +272,24 @@ To determine if `knowledge base entails alpha`:
 ##### Go application using model checking
 
 The knowledge representation package is imported as `k` for brevity:
+Notice here I've used the convenience method Add to add propositions to
+the knowledge base.
 
 .code know/cmd/knights-knave/main.go /k "github.com/,/$/
 .code know/cmd/knights-knave/main.go /func main/,/^}/
 
-The `qry:=range []Prop{kni,kna}` loop, model checks kb to
-determine if kb entails any of the symbols kni or kna.
+`knowledgeAbout` defines the knowledge base.
+Notice here I've used the convenience method Add to add propositions to
+the knowledge base.
+
+.code know/cmd/knights-knave/main.go /func knowledgeAbout/,/^}/
+
+
+`findEntailments` uses a model checking algorithm to make inferences.
+The `qry:=range kb.Symbols()` loop, model checks kb to
+determine if kb entails any of kb's symbols: kni or kna.
+
+.code know/cmd/knights-knave/main.go /func findEntailments/,/^}/
 
 ### First-order logic
 

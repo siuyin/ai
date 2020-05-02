@@ -14,23 +14,37 @@ func main() {
 	kni := k.Sym("I am a knight!")
 	kna := k.Sym("I am a knave.")
 
-	kb := k.And(
-		k.Or(
-			k.And(kni, k.Not(kna)),
-			k.And(kna, k.Not(kni)),
-		),
-		k.Implication(kni, k.And(kni, kna)),
-		k.Implication(kna, k.Not(k.And(kni, kna))),
-	)
-	for _, qry := range []k.Prop{kni, kna} { // HL
+	kb := knowledgeAbout(kni, kna)
+
+	ets := findEntailments(kb)
+	if len(ets) == 0 {
+		fmt.Println("Knowledge base could not make any inferences")
+	}
+	for _, et := range ets {
+		fmt.Println(et)
+	}
+}
+func knowledgeAbout(kni, kna k.Prop) k.Prop {
+	kb := k.And() // kb is a series of propositions known to be true.
+	kb = kb.Add(k.Or(
+		k.And(kni, k.Not(kna)),
+		k.And(kna, k.Not(kni)),
+	))
+	kb = kb.Add(k.Implication(kni, k.And(kni, kna)))
+	kb = kb.Add(k.Implication(kna, k.Not(k.And(kni, kna))))
+	return kb
+}
+func findEntailments(kb k.Prop) []string {
+	entailments := []string{}
+	for qry := range kb.Symbols() { // HL
 		val, err := k.ModelCheck(kb, qry)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if val {
-			fmt.Printf("\nKnowledge base inferred: %q\n", qry)
-			return
+			entailments = append(entailments,
+				fmt.Sprintf("\nKnowledge base inferred: %q\n", qry))
 		}
 	}
-	fmt.Printf("\nKnowledge base could not make any inferences.\n")
+	return entailments
 }

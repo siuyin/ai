@@ -120,8 +120,11 @@ type and struct {
 	Conjuncts []Prop
 }
 
-func (a and) Add(conjunct Prop) {
+// Add appends proposition e to a's intenal list
+// of Conjuncts.
+func (a and) Add(conjunct Prop) and {
 	a.Conjuncts = append(a.Conjuncts, conjunct)
+	return a
 }
 func (a and) Evaluate(model symbolSet) (bool, error) {
 	for _, elem := range a.Conjuncts {
@@ -171,8 +174,9 @@ type or struct {
 	Disjuncts []Prop
 }
 
-func (o or) Add(disjunct Prop) {
+func (o or) Add(disjunct Prop) or {
 	o.Disjuncts = append(o.Disjuncts, disjunct)
+	return o
 }
 func (o or) Evaluate(model symbolSet) (bool, error) {
 	for _, elem := range o.Disjuncts {
