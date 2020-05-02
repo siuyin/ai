@@ -161,7 +161,7 @@ func symbolsSet(e []Prop) symbolSet {
 	return symbs
 }
 
-func Or(d ...Prop) Prop {
+func Or(d ...Prop) or {
 	r := or{}
 	r.Disjuncts = append(r.Disjuncts, d...)
 	return r
@@ -194,7 +194,7 @@ func (o or) Symbols() symbolSet {
 	return symbolsSet(o.Disjuncts)
 }
 
-func Implication(a, b Prop) Prop {
+func Implication(a, b Prop) implication {
 	return implication{A: a, B: b}
 }
 

@@ -281,6 +281,12 @@ determine if kb entails any of the symbols kni or kna.
 
 ### First-order logic
 
+Propositional logic suffers from combinatorial explosion. Consider 4 sports
+houses in a School. Further consider 4 students who each belong to a different house.
+
+Let H1 to H4 be the 4 houses and S1 and S4 be the 4 students. In propositional logic
+we will have symbols H1S1 H1S2 ... H4S3 H4S4, giving a total of 16 symbols.
+
 ∀ Student, Student has ID. Reads for all students, each student has an ID.
 
 Ǝ Student, Student has 4.0 GPA. Reads there exists some students, where the student has a 4.0 grade point average.
