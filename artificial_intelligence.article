@@ -108,6 +108,24 @@ These include:
 1. A-star,  a heuristic enhanced search.
 1. Iterative deepening depth-first search (only for directed graphs).
 
+## Storing and Using Knowledge in computers
+How do we:
+1. Store knowledge in a machine-readable form?
+1. Use that stored knowledge to make inferences?
+
+### Storage
+Use a set of 'sentences'.
+
+Q: set or sequence? Is there a temporal dependency?
+Is the knowledge valid all the time or just some of the time?
+For knowledge to be useful, all we need it that it is valid at the time of use.
+Thus we can store knowledge as a set of sentences.
+
+A lot has been written about the subject. See [the wikipedia entry](https://en.wikipedia.org/wiki/Knowledge_representation_and_reasoning) .
+
+Each sentence has a context-free grammar of terms.
+
+
 
 ## Representing Knowledge
 
@@ -301,3 +319,20 @@ we will have symbols H1S1 H1S2 ... H4S3 H4S4, giving a total of 16 symbols.
 
 Ǝ Student, Student has 4.0 GPA. Reads there exists some students, where the student has a 4.0 grade point average.
 
+## Uncertainty
+
+A 'random variable' in probability theory is a variable that can take
+on values drawn from its domain of values.
+
+Eg. 'roll' could be a random variable for rolls of a dice. The values
+'roll' can take on range from 1 through 6.
+
+A probability distribution for a random variable X is a list. The value of each element in the
+list is the probability that X takes on a given value from its domain of values.
+
+Eg. The probability distribution 'roll' for a fair dice is illustrated below:
+(1,1/6), (2,1/6), ... (6,1/6)
+
+The first value of the tuple is the value of 'roll'. The second value, p, of the
+tuple is the probability of that 'roll' having that value p.  
+Hence the probability distribution for 'roll' has six elements: [1/6,1/6, ..., 1/6].
