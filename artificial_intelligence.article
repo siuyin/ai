@@ -5,6 +5,7 @@ Developer, Beyond Broadcast LLP
 siuyin@beyondbroadcast.com
 19 Apr 2020
 
+
 These notes are based on "CS50: Introduction to AI with Python by Harvard University".
 That course was first published on EdX on 1 April 2020 and delivered by Brian Yu.
 brian@cs.harvard.edu
@@ -14,7 +15,6 @@ to reinforce my understanding of the course content.
 
 
 ## Search
-
 Given a problem with a defined starting point,  
 find a series of actions
 that will lead to a, preferably optimal, solution.
@@ -24,7 +24,7 @@ A be the set of actions when applied to the world
 results in a new state S'.
 
 The transition from S to S' can then be modelled as a function:  
-T(S,A) -> S'.
+`T(S,A) -> S'.`
 
 A is a function of the current state, S.
 Thus A should be written: A(S).
@@ -327,7 +327,7 @@ on values drawn from its domain of values.
 Eg. 'roll' could be a random variable for rolls of a dice. The values
 'roll' can take on range from 1 through 6.
 
-A probability distribution for a random variable X is a list. The value of each element in the
+A probability distribution over a random variable X is a list. The value of each element in the
 list is the probability that X takes on a given value from its domain of values.
 
 Eg. The probability distribution 'roll' for a fair dice is illustrated below:
@@ -335,4 +335,23 @@ Eg. The probability distribution 'roll' for a fair dice is illustrated below:
 
 The first value of the tuple is the value of 'roll'. The second value, p, of the
 tuple is the probability of that 'roll' having that value p.  
-Hence the probability distribution for 'roll' has six elements: [1/6,1/6, ..., 1/6].
+Hence the probability distribution over 'roll' has six elements: [1/6,1/6, ..., 1/6].
+
+### Bayes' rule
+
+.html math/bayes.html
+
+
+
+Bayes' rule is usually state in the form of Equ. 2.
+
+### Joint probability distribution
+A joint probability distribution is the probability distribution over two or more
+random variables.
+
+Example. Let PD(D) be the probability distribution over random variable D representing dice rolls.
+And PD(C) be the probability distribution over random variable C representing coin tosses.
+Then PD(D,C) is a list of 6*2 = 12 values. [1/6 * 1/2, 1/6 * 1/2, ... , 1/6 * 1/2].
+
+
+.html math/mathjax.html
