@@ -337,14 +337,6 @@ The first value of the tuple is the value of 'roll'. The second value, p, of the
 tuple is the probability of that 'roll' having that value p.  
 Hence the probability distribution over 'roll' has six elements: [1/6,1/6, ..., 1/6].
 
-### Bayes' rule
-
-.html math/bayes.html
-
-
-
-Bayes' rule is usually state in the form of Equ. 2.
-
 ### Joint probability distribution
 A joint probability distribution is the probability distribution over two or more
 random variables.
@@ -352,6 +344,42 @@ random variables.
 Example. Let PD(D) be the probability distribution over random variable D representing dice rolls.
 And PD(C) be the probability distribution over random variable C representing coin tosses.
 Then PD(D,C) is a list of 6*2 = 12 values. [1/6 * 1/2, 1/6 * 1/2, ... , 1/6 * 1/2].
+
+### Useful Probability Formulae
+
+#### Bayes' rule
+
+.html math/bayes.html 
+
+Bayes' rule is usually stated in the form of Equ. 2.
+
+#### Marginalization
+A technique to derive unconditional probabilities from joint probabilities.
+
+.html math/margin.html
+
+#### Conditioning
+Very much related to marginalization:
+
+.html math/conditioning.html
+
+## Bayesian Networks
+
+A Bayesian network is a directed acyclic graph.
+
+The edge (A,B) represents the temporal relationship: A was presented
+before B.
+
+Nodes hold probability distribution over a random variable.
+The value of the node B, is PD(B|A), where PD means "probability distribution over".
+
+The network A -> B reads as follows:
+1. Node A holds the unconditional probability distribution of A occurring.
+1. Node B holds the probability distribution of B occurring, given A has occurred.
+
+
+
+
 
 
 .html math/mathjax.html
